@@ -7,7 +7,7 @@ exports.authRoute = void 0;
 const express_1 = __importDefault(require("express"));
 const router = express_1.default.Router();
 exports.authRoute = router;
-router.get('/home', (req, res) => {
-    res.json('Successful');
+router.get('/', (req, res) => {
+    res.json('This is Auth Route');
 });
 //# sourceMappingURL=auth.js.map
