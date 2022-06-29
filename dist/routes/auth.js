@@ -24,10 +24,11 @@ router.post("/register", (req, res) => __awaiter(void 0, void 0, void 0, functio
     if (username === undefined || password === undefined || isAdmin === undefined)
         res.status(401).json("Please complete your registration form");
     try {
-        yield postgres_1.postgresPool.query("INSERT INTO user (username, password, is_admin, created_at, updated_at) VALUES ($1, $2, $3, NOW(), NOW()) RETURNING *", [username, password, isAdmin]);
+        yield postgres_1.postgresPool.query("INSERT INTO list_of_users (username, password, is_admin, created_at, updated_at) VALUES ($1, $2, $3, NOW(), NOW())", [username, password, isAdmin]);
         res.status(200).json("Register Successful!");
     }
     catch (err) {
+        console.log("error saat insert ke database");
         res.status(500).json(err);
     }
 }));
