@@ -1,12 +1,12 @@
-import { Pool } from 'pg';
+import { Pool } from "pg";
 // const Pool = require('pg').Pool;
 
 const pool = new Pool({
-  user: 'postgres',
+  user: "postgres",
   password: process.env.POSTGRES_PASS,
-  database: 'riani_ecommerce',
-  host: 'localhost',
+  database: "riani_ecommerce",
+  host: "localhost",
   port: 5432,
 });
 
-export {pool as postgresPool};
+export { pool as postgresPool };
