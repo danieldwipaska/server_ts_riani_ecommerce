@@ -7,7 +7,7 @@ exports.userRoute = void 0;
 const express_1 = __importDefault(require("express"));
 const router = express_1.default.Router();
 exports.userRoute = router;
-router.get('/', (req, res) => {
-    res.json('This is User Route');
+router.get("/", (req, res) => {
+    res.json("This is User Route");
 });
 //# sourceMappingURL=users.js.map

@@ -17,15 +17,15 @@ const express_1 = __importDefault(require("express"));
 const postgres_1 = require("../models/postgres");
 const router = express_1.default.Router();
 exports.authRoute = router;
-router.post('/register', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.post("/register", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const username = req.body.username;
     const password = req.body.password;
     const isAdmin = req.body.isAdmin;
-    if (!username || !password || !isAdmin)
-        res.status(401).json('Please complete your registration form');
+    if (username === undefined || password === undefined || isAdmin === undefined)
+        res.status(401).json("Please complete your registration form");
     try {
-        yield postgres_1.postgresPool.query('INSERT INTO user (username, password, is_admin) VALUES ($1, $2, $3) RETURNING *', [username, password, isAdmin]);
-        res.status(200).json('Register Successful!');
+        yield postgres_1.postgresPool.query("INSERT INTO user (username, password, is_admin, created_at, updated_at) VALUES ($1, $2, $3, NOW(), NOW()) RETURNING *", [username, password, isAdmin]);
+        res.status(200).json("Register Successful!");
     }
     catch (err) {
         res.status(500).json(err);
