@@ -13,7 +13,4 @@ app.use(express.json());
 app.use("/api/auth", authRoute);
 app.use("/api/users", userRoute);
 
-const port: number = 3000;
-app.listen(port, () => {
-  console.log(`listening at port ${port}`);
-});
+export { app };

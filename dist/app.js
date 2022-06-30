@@ -6,8 +6,5 @@ const app = express();
 app.use(express.json());
 app.use("/api/auth", authRoute);
 app.use("/api/users", userRoute);
-const port = 3000;
-app.listen(port, () => {
-    console.log(`listening at port ${port}`);
-});
+export { app };
 //# sourceMappingURL=app.js.map

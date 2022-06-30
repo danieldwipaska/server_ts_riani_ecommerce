@@ -4,10 +4,14 @@
   "description": "e-commerce versi typescript",
   "main": "./dist/app.js",
   "type": "module",
+  "jest": {
+    "transform": {}
+  },
   "scripts": {
     "build": "npx tsc",
     "start": "node dist/app.js",
-    "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/index.js\""
+    "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/index.js\"",
+    "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "author": "Daniel Kamasi",
   "license": "ISC",
@@ -18,10 +22,14 @@
   },
   "devDependencies": {
     "@types/express": "^4.17.13",
+    "@types/jest": "^28.1.3",
     "@types/node": "^18.0.0",
     "@types/pg": "^8.6.5",
+    "@types/supertest": "^2.0.12",
     "concurrently": "^7.2.2",
+    "jest": "^28.1.2",
     "nodemon": "^2.0.18",
+    "supertest": "^6.2.3",
     "ts-node": "^10.8.1"
   }
 }
