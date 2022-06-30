@@ -41,4 +41,53 @@ router.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         res.status(500).json(err);
     }
 }));
+router.put("/:id/update", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const userId = req.params.id;
+    const newUsername = req.body.username;
+    const newPassword = req.body.password;
+    if (newUsername === undefined || newPassword === undefined) {
+        res.status(401).json("Please complete your update forms");
+    }
+    else {
+        try {
+            const user = yield postgres_1.postgresPool.query("SELECT user_id, username, created_at, updated_at FROM list_of_users WHERE user_id = $1", [userId]);
+            if (user.rows[0] === undefined) {
+                res.status(402).json("User Not Found");
+            }
+            else {
+                try {
+                    yield postgres_1.postgresPool.query("UPDATE list_of_users SET username = $1, password = $2, updated_at = NOW() WHERE user_id = $3", [newUsername, newPassword, userId]);
+                    res.status(200).json("User has been updated");
+                }
+                catch (err) {
+                    res.status(500).json(err);
+                }
+            }
+        }
+        catch (err) {
+            res.status(500).json(err);
+        }
+    }
+}));
+router.delete("/:id/delete", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const userId = req.params.id;
+    try {
+        const user = yield postgres_1.postgresPool.query("SELECT user_id, username, created_at, updated_at FROM list_of_users WHERE user_id = $1", [userId]);
+        if (user.rows[0] === undefined) {
+            res.status(402).json("User Not Found");
+        }
+        else {
+            try {
+                yield postgres_1.postgresPool.query("DELETE FROM list_of_users WHERE user_id = $1", [userId]);
+                res.status(200).json("User has been deleted");
+            }
+            catch (err) {
+                res.status(500).json(err);
+            }
+        }
+    }
+    catch (err) {
+        res.status(500).json(err);
+    }
+}));
 //# sourceMappingURL=users.js.map
