@@ -1,4 +1,3 @@
-"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -8,19 +7,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.userRoute = void 0;
-const express_1 = __importDefault(require("express"));
-const postgres_1 = require("../models/postgres");
-const router = express_1.default.Router();
-exports.userRoute = router;
+import express from "express";
+import { postgresPool } from "../models/postgres.js";
+const router = express.Router();
 router.get("/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const userId = req.params.id;
     try {
-        const user = yield postgres_1.postgresPool.query("SELECT user_id, username, is_admin, created_at, updated_at FROM list_of_users WHERE user_id = $1", [userId]);
+        const user = yield postgresPool.query("SELECT user_id, username, is_admin, created_at, updated_at FROM list_of_users WHERE user_id = $1", [userId]);
         if (user.rows[0] === undefined || user.rows[0] === null) {
             res.status(401).json("User Not Found");
         }
@@ -34,7 +27,7 @@ router.get("/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 }));
 router.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const users = yield postgres_1.postgresPool.query("SELECT user_id, username, is_admin, created_at, updated_at FROM list_of_users");
+        const users = yield postgresPool.query("SELECT user_id, username, is_admin, created_at, updated_at FROM list_of_users");
         res.status(200).json(users.rows);
     }
     catch (err) {
@@ -50,13 +43,13 @@ router.put("/:id/update", (req, res) => __awaiter(void 0, void 0, void 0, functi
     }
     else {
         try {
-            const user = yield postgres_1.postgresPool.query("SELECT user_id, username, created_at, updated_at FROM list_of_users WHERE user_id = $1", [userId]);
+            const user = yield postgresPool.query("SELECT user_id, username, created_at, updated_at FROM list_of_users WHERE user_id = $1", [userId]);
             if (user.rows[0] === undefined) {
                 res.status(402).json("User Not Found");
             }
             else {
                 try {
-                    yield postgres_1.postgresPool.query("UPDATE list_of_users SET username = $1, password = $2, updated_at = NOW() WHERE user_id = $3", [newUsername, newPassword, userId]);
+                    yield postgresPool.query("UPDATE list_of_users SET username = $1, password = $2, updated_at = NOW() WHERE user_id = $3", [newUsername, newPassword, userId]);
                     res.status(200).json("User has been updated");
                 }
                 catch (err) {
@@ -72,13 +65,13 @@ router.put("/:id/update", (req, res) => __awaiter(void 0, void 0, void 0, functi
 router.delete("/:id/delete", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const userId = req.params.id;
     try {
-        const user = yield postgres_1.postgresPool.query("SELECT user_id, username, created_at, updated_at FROM list_of_users WHERE user_id = $1", [userId]);
+        const user = yield postgresPool.query("SELECT user_id, username, created_at, updated_at FROM list_of_users WHERE user_id = $1", [userId]);
         if (user.rows[0] === undefined) {
             res.status(402).json("User Not Found");
         }
         else {
             try {
-                yield postgres_1.postgresPool.query("DELETE FROM list_of_users WHERE user_id = $1", [userId]);
+                yield postgresPool.query("DELETE FROM list_of_users WHERE user_id = $1", [userId]);
                 res.status(200).json("User has been deleted");
             }
             catch (err) {
@@ -90,4 +83,5 @@ router.delete("/:id/delete", (req, res) => __awaiter(void 0, void 0, void 0, fun
         res.status(500).json(err);
     }
 }));
+export { router as userRoute };
 //# sourceMappingURL=users.js.map

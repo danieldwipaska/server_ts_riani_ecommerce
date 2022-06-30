@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "e-commerce versi typescript",
   "main": "./dist/app.js",
+  "type": "module",
   "scripts": {
     "build": "npx tsc",
     "start": "node dist/app.js",

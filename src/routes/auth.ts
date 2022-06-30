@@ -1,6 +1,6 @@
 import express, { Router, Request, Response } from "express";
 import { QueryResult } from "pg";
-import { postgresPool } from "../models/postgres";
+import { postgresPool } from "../models/postgres.js";
 
 const router: Router = express.Router();
 
