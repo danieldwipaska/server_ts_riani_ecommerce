@@ -13,8 +13,12 @@ describe("GET /api/users/:id", () => {
     const data = await request(app).get("/api/users/2");
     expect(data.statusCode).toBe(200);
   });
-  it("Should have status code 401", async () => {
+  it("Should have status code 401 (id not found)", async () => {
     const data = await request(app).get("/api/users/3");
+    expect(data.statusCode).toBe(401);
+  });
+  it("Should have status code 500 (id not valid)", async () => {
+    const data = await request(app).get("/api/users/a");
     expect(data.statusCode).toBe(401);
   });
 });
