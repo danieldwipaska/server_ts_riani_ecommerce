@@ -41,6 +41,7 @@ router.put("/:id/update", async (req: Request, res: Response) => {
   const userId: string = req.params.id;
   const newUsername: string | undefined = req.body.username;
   const newPassword: string | undefined = req.body.password;
+  //if form not completed
   if (newUsername === undefined || newPassword === undefined) {
     res.status(401).json("Please complete your update forms");
   } else {

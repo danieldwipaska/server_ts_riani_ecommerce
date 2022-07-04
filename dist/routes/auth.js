@@ -25,14 +25,30 @@ router.post("/register", (req, res) => __awaiter(void 0, void 0, void 0, functio
     const username = req.body.username;
     const password = req.body.password;
     const isAdmin = req.body.isAdmin;
-    if (username === undefined || password === undefined || isAdmin === undefined)
+    if (username === undefined ||
+        password === undefined ||
+        isAdmin === undefined) {
         res.status(401).json("Please complete your registration form");
-    try {
-        yield postgresPool.query("INSERT INTO list_of_users (username, password, is_admin, created_at, updated_at) VALUES ($1, $2, $3, NOW(), NOW())", [username, password, isAdmin]);
-        res.status(200).json("Register Successful!");
     }
-    catch (err) {
-        res.status(500).json(err);
+    else {
+        try {
+            const user = yield postgresPool.query("SELECT username, is_admin, created_at, updated_at FROM list_of_users WHERE username = $1", [username]);
+            if (user.rows[0] != undefined) {
+                res.status(403).json("username already exists");
+            }
+            else {
+                try {
+                    yield postgresPool.query("INSERT INTO list_of_users (username, password, is_admin, created_at, updated_at) VALUES ($1, $2, $3, NOW(), NOW())", [username, password, isAdmin]);
+                    res.status(200).json("Register Successful!");
+                }
+                catch (err) {
+                    res.status(500).json(err);
+                }
+            }
+        }
+        catch (err) {
+            res.status(500).json(err);
+        }
     }
 }));
 router.post("/login", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -51,7 +67,7 @@ router.post("/login", (req, res) => __awaiter(void 0, void 0, void 0, function* 
                 if (password != user.rows[0].password) {
                     res.status(402).json("Wrong Password");
                 }
-                else if (password === user.rows[0].password) {
+                else {
                     const _a = user.rows[0], { password } = _a, userData = __rest(_a, ["password"]);
                     res.status(200).json(userData);
                 }
